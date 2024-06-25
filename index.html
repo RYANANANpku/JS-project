@@ -89,25 +89,29 @@
     <!-- 上传歌曲的表单 -->
     <form class="uploadForm" id="uploadForm" style="display: none;">
         <!-- 选择文件 -->
-        <div>
-            <div>请上传歌曲文件</div>
-            <input type="file" id="songFile" accept=".mp3">
+        <div class = "form" >
+            <div class = "form">请上传歌曲文件:</div>
+            <input type="file" class = "form file" id="songFile" accept=".mp3">
         </div>
-        <div>
+        <div class = "form" >
             <!-- 填写歌曲名称 -->
-            <input type="te√xt" id="songName" placeholder="歌曲名称">
+            <input type="text" class = "form text" id="songName" placeholder="歌曲名称">
             <!-- 填写歌手名称 -->
-            <input type="text" id="artistName" placeholder="歌手名称">
+            <input type="text" class = "form text" id="artistName" placeholder="歌手名称">
         </div>
         <!-- 上传背景图片 -->
-        <div>
-            <div>请上传歌曲封面</div>
-            <input type="file" id="backgroundImage" accept=".jpg">
+        <div class = "form">
+            <div class = "form">请上传歌曲封面:</div>
+            <input type="file" class = "form file" id="backgroundImage" accept=".jpg">
         </div>
-        <!-- 提交按钮 -->
-        <input id="submit" type="submit" value="上传">
+        <div class="form", style="justify-content: left;">
+            <!-- 提交按钮 -->
+            <input id="submit" class = "form" type="submit" value="上传">
+            <!-- 提示 -->
+            <label id="hint" class = "form" style="color: red;"></label>
+        </div>
         <!-- 清除表单 -->
-        <input type="reset" id="resetBtn" style="display:none;" />
+        <input type="reset" class = "form" id="resetBtn" style="display:none;" />
     </form>
 
     <script src="./js/audio.js"></script>

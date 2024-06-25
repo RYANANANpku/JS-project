@@ -49,6 +49,7 @@ var musicList = document.getElementById('music-list');
 var form = document.getElementById('uploadForm');
 var submit = document.getElementById('submit');
 var reset = document.getElementById('resetBtn');
+var hint = document.getElementById("hint");
 
 // 暂停/播放功能实现
 pause.onclick = function (e) {
@@ -199,7 +200,6 @@ function initMusic() {
     var reader = new FileReader(); // 创建一个 FileReader 对象
 
     reader.onload = function(e) {
-        // console.log(e.target.result);
         try {
             audio.src = e.target.result;
             audio.oncanplay = function() {
@@ -209,29 +209,24 @@ function initMusic() {
             console.log("try", e);
         }
     };
-    console.log('check');
     reader.readAsDataURL(musicData[musicId]["songFile"]); // 以 DataURL 格式读取文件
     audio.load();
     recordImg.classList.remove('rotate-play');
     audio.ondurationchange = function () {
         musicTitle.innerText = musicData[musicId]["songName"];
         author.innerText = musicData[musicId]["artistName"];
-        recordImg.style.backgroundImage = "url('img/record"+musicId.toString()+".jpg')";
 
         var reader1 = new FileReader();
         reader1.onload = function(e){
             try {
-                console.log('im in!');
-                console.log(e.target.result)
                 recordImg.style.backgroundImage = 'url(' + e.target.result + ')';
-                console.log(recordImg.style.backgroundImage);
                 body.style.backgroundImage = 'url(' + e.target.result + ')';
             } catch (error) {
                 console.log("try", e);
             }
         }
         reader1.readAsDataURL(musicData[musicId]["backgroundImage"])
-        // body.style.backgroundImage = "url('img/bg"+musicId.toString()+".png')";
+
         audioTime.innerText = transTime(audio.duration);
         // 重置进度条
         audio.currentTime = 0;
@@ -324,7 +319,8 @@ upload.addEventListener('click', function (event) {
     // 切换表单的显示状态
     if (form.style.display === 'none') {
         form.reset();
-        form.style.display = 'block';
+        hint.innerHTML = "";
+        form.style.display = 'flex';
     } else {
         form.style.display = 'none';
     }
@@ -383,7 +379,12 @@ form.addEventListener('submit', function(event) {
     var artistName = document.getElementById('artistName').value;
     var backgroundImage = document.getElementById('backgroundImage').files[0];
 
-
+    if(songFile === undefined || backgroundImage === undefined){
+        hint.innerHTML = "歌曲文件或专辑封面为空！";
+        return;
+    } 
+    if(songName === ""){songName = "作品"}
+    if(artistName === ""){artistName = "未知"}
 
     // 存储并将歌曲加入播放列表
     addSongFile(songFile, songName, artistName, backgroundImage);
