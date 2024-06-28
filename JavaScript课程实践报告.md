@@ -45,7 +45,19 @@
 
 <img src="report/new music.png" alt="image-20240628203632598" style="zoom:50%;" />
 
-> 示例音乐文件被存放在`/music`，示例专辑封面被存放在`/images`
+> 示例音乐文件被存放在`/music`，示例专辑封面被存放在`/images`，默认队列中是没有文件的，需要手动上传
+
+### 界面切换
+用户可以通过点击界面切换的按钮来实现播放器和主页间的切换
+
+<img src="report/switch.jpg" style="zoom:50%;" />
+
+点击之后播放器的界面会从下往上自然弹出，再次点击后界面会从上往下收回，回到主页的界面
+
+### 播放控制按键（暂停、上下首、进度条）
+下面脚栏中间是一些控制按键，可以实现歌曲的播放与暂停，上下首的切换等功能。
+
+<img src="report/button.jpg" style="zoom:50%;" />
 
 
 
@@ -217,8 +229,181 @@ function initAndPlay() {
 }
 ```
 
+### 切换界面
+通过num变量记录所处界面，设置主页和播放界面的display属性来实现切换
 
+```javascript
+// 切换播放界面
+var num = 0;
 
+change.addEventListener('click', function (event) {
+    if(num == 0)
+    {
+        container.style.display = "none";
+        bg.classList.remove("recorder-hide");
+        bg.classList.add("recorder-show");
+        bg.style.display = "block";
+        num = 1;
+        document.body.style.overflow = "hidden";
+        return;
+    }
+    else{
+        bg.classList.remove("recorder-show");
+        bg.classList.add("recorder-hide");
+        setTimeout(function() {
+            container.style.display = "block";
+            bg.style.display = "none";
+        }, 600);
+        num = 0;
+    }
+});
+```
+
+用recorder-hide和recorder-show来实现丝滑的切换
+```javascript
+.recorder-show {
+    animation: showAniY;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+
+.recorder-hide {
+    animation: hideAniY;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+```
+
+### 播放控制按键
+
+这一部分主要是通过绑定按钮和对应的点击监听函数来实现的，
+
+`暂停/播放键`：点击后设置audio的音乐播放，同时控制唱片的旋转（Rotate函数），最后再修改相关图标
+
+```javascript
+// 暂停/播放功能实现
+pause.onclick = function (e) {
+    if (audio.paused) {
+        audio.play();
+        rotateRecord();
+        pause.classList.remove('icon-play');
+        pause.classList.add('icon-pause');
+    } else {
+        audio.pause();
+        rotateRecordStop();
+        pause.classList.remove('icon-pause');
+        pause.classList.add('icon-play');
+    }
+}
+```
+
+`上/下一首键`：点击后修改musicId，再重置音乐播放，调用初始化函数，实现上下首的切换
+
+```javascript
+// 上一首
+skipForward.addEventListener('click', function (event) {
+    musicId = musicId - 1;
+    if (musicId < 0) {
+        musicId = 3;
+    }
+    initAndPlay();
+});
+
+// 下一首
+skipBackward.addEventListener('click', function (event) {
+    musicId = musicId + 1;
+    if (musicId > 3) {
+        musicId = 0;
+    }
+    initAndPlay();
+});
+```
+`音量调节键`：直接根据滑块对应的数值去调节音量，同时监听点击来设置静音
+
+```javascript
+// 存储上一次的音量
+var lastVolumn = 70
+
+// 滑块调节音量
+audio.addEventListener('timeupdate', updateVolumn);
+function updateVolumn() {
+    audio.volume = volumeTogger.value / 70;
+}
+
+// 点击音量调节设置静音
+volume.addEventListener('click', setNoVolumn);
+function setNoVolumn() {
+    if (volumeTogger.value == 0) {
+        if (lastVolumn == 0) {
+            lastVolumn = 70;
+        }
+        volumeTogger.value = lastVolumn;
+        volume.style.backgroundImage = "url('img/音量.png')";
+    }
+    else {
+        lastVolumn = volumeTogger.value;
+        volumeTogger.value = 0;
+        volume.style.backgroundImage = "url('img/静音.png')";
+    }
+}
+```
+
+`播放模式的设置`：监听鼠标点击来设置图标切换，同时设置audio.onended来实现不同的播放设置（循环/随机/下一首）
+
+```javascript
+// 播放模式设置
+var modeId = 1;
+mode.addEventListener('click', function (event) {
+    modeId = modeId + 1;
+    if (modeId > 3) {
+        modeId = 1;
+    }
+    mode.style.backgroundImage = "url('img/mode" + modeId.toString() + ".png')";
+});
+
+audio.onended = function () {
+    if (modeId == 2) {
+        // 跳转至下一首歌
+        musicId = (musicId + 1) % 4;
+    }
+    else if (modeId == 3) {
+        // 随机生成下一首歌的序号
+        var oldId = musicId;
+        while (true) {
+            musicId = Math.floor(Math.random() * 3) + 0;
+            if (musicId != oldId) { break; }
+        }
+    }
+    initAndPlay();
+}
+```
+
+`进度条`：更新进度条需要监听audio，根据音频播放时间绑定一个修改进度条的函数
+
+```javascript
+// 更新进度条
+audio.addEventListener('timeupdate', updateProgress); // 监听音频播放时间并更新进度条
+function updateProgress() {
+    var value = audio.currentTime / audio.duration;
+    progress.style.width = value * 100 + '%';
+    playedTime.innerText = transTime(audio.currentTime);
+}
+```
+同时也需要监听进度条上的鼠标点击事件，调整audio的播放进度
+```javascript
+// 点击进度条跳到指定点播放
+progressTotal.addEventListener('mousedown', function (event) {
+    // 只有音乐开始播放后才可以调节，已经播放过但暂停了的也可以
+    if (!audio.paused || audio.currentTime != 0) {
+        var pgsWidth = parseFloat(window.getComputedStyle(progressTotal, null).width.replace('px', ''));
+        var rate = event.offsetX / pgsWidth;
+        audio.currentTime = audio.duration * rate;
+        updateProgress(audio);
+    }
+});
+```
 ## 四、总结
 
 
