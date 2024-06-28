@@ -122,16 +122,22 @@ progressTotal.addEventListener('mousedown', function (event) {
 
 
 // 点击列表展开音乐列表
-list.addEventListener('click', function (event) {
+function openListBoard(event) {
     musicList.classList.remove("list-card-hide");
     musicList.classList.add("list-card-show");
     musicList.style.display = "flex";
     closeList.style.display = "flex";
-    closeList.addEventListener('click', closeListBoard);
-});
+    closeList.addEventListener('click', closeListBoard)
+    list.removeEventListener('click', openListBoard)
+    list.addEventListener('click', closeListBoard);
+}
+
+list.addEventListener('click', openListBoard);
 
 // 点击关闭面板关闭音乐列表
 function closeListBoard() {
+    list.removeEventListener('click', closeListBoard);
+    list.addEventListener('click', openListBoard);
     musicList.classList.remove("list-card-show");
     musicList.classList.add("list-card-hide");
     closeList.style.display = "none";
