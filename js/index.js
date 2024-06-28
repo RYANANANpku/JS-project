@@ -172,34 +172,8 @@ change.addEventListener('click', function (event) {
 // let musicData = [['洛春赋', '云汐'], ['Yesterday', 'Alok/Sofi Tukker'], ['江南烟雨色', '杨树人'], ['Vision pt.II', 'Vicetone']];
 let musicData = []; // {songFile, songName, artistName, backgroundImage}
 
-
-
-
-
-// // 暴力捆绑列表音乐
-// document.getElementById("music0").addEventListener('click', function (event) {
-//     musicId = 0;
-//     initAndPlay();
-// });
-// document.getElementById("music1").addEventListener('click', function (event) {
-//     musicId = 1;
-//     initAndPlay();
-// });
-// document.getElementById("music2").addEventListener('click', function (event) {
-//     musicId = 2;
-//     initAndPlay();
-// });
-// document.getElementById("music3").addEventListener('click', function (event) {
-//     musicId = 3;
-//     initAndPlay();
-// });
-
-
-// TODO: 传入乐曲的名字和艺术家
 // 1. 填入播放列表，即添加div子元素
 // 2. 完成事件绑定
-// to 敬鼎豪：为了方便理解我把addToPlaylist给包装成了一个addSongFile函数
-// addSongFile主要是方便浏览器初始化，你不用在意
 function addToPlaylist(songId, songName = "unknown", artistName = "unknown"){
     l = document.createElement('div')
     l.setAttribute('id', `music${songId}`)
@@ -264,7 +238,6 @@ function initMusic() {
         refreshRotate();
     }
 }
-// initMusic();
 
 // 初始化并播放
 function initAndPlay() {
