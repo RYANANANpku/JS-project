@@ -1,0 +1,103 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3879324 */
+  src: url('iconfont.woff2?t=1675651693868') format('woff2'),
+       url('iconfont.woff?t=1675651693868') format('woff'),
+       url('iconfont.ttf?t=1675651693868') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-stop:before {
+  content: "\e650";
+}
+
+.icon-bofang1:before {
+  content: "\e87c";
+}
+
+.icon-music:before {
+  content: "\e658";
+}
+
+.icon-gouwuche:before {
+  content: "\e899";
+}
+
+.icon-xiazai:before {
+  content: "\e610";
+}
+
+.icon-24gl-playlistMusic4:before {
+  content: "\ea72";
+}
+
+.icon-sousuo:before {
+  content: "\e600";
+}
+
+.icon-shoucang:before {
+  content: "\e601";
+}
+
+.icon-xiayishou:before {
+  content: "\e62c";
+}
+
+.icon-shoucang1:before {
+  content: "\e86d";
+}
+
+.icon-icon-test:before {
+  content: "\e674";
+}
+
+.icon-bofang:before {
+  content: "\e624";
+}
+
+.icon-24gl-volumeLow:before {
+  content: "\ea0d";
+}
+
+.icon-24gf-headphones:before {
+  content: "\ea10";
+}
+
+.icon-aixin:before {
+  content: "\e83f";
+}
+
+.icon-shangyishou:before {
+  content: "\e63c";
+}
+
+.icon-xiayishou1:before {
+  content: "\e63e";
+}
+
+.icon-aixin1:before {
+  content: "\e60f";
+}
+
+.icon-shipin:before {
+  content: "\e602";
+}
+
+.icon-diantai:before {
+  content: "\e693";
+}
+
+.icon-lishi:before {
+  content: "\e603";
+}
+
+.icon-bendi:before {
+  content: "\e604";
+}
+
