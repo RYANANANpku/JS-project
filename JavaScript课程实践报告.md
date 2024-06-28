@@ -59,6 +59,13 @@
 
 <img src="report/button.jpg" style="zoom:50%;" />
 
+### 唱片旋转
+
+注意到一般的音乐播放器中，都会让封面模拟唱片旋转的过程，这里我们也是一样，点击播放后，在播放界面，封面会以匀速顺时针旋转
+
+
+<img src="report/rotate.jpg" style="zoom:50%;" />
+
 
 
 ## 三、实现过程
@@ -404,8 +411,49 @@ progressTotal.addEventListener('mousedown', function (event) {
     }
 });
 ```
+
+### 唱片旋转效果
+以下是几个rotate相关的函数，通过这几个函数可以控制唱片的旋转与暂停，一般在初始化播放或者切换歌曲的时候会调用
+```javascript
+// 刷新唱片旋转角度
+function refreshRotate() {
+    recordImg.classList.add('rotate-play');
+}
+
+// 使唱片旋转
+function rotateRecord() {
+    recordImg.style.animationPlayState = "running"
+}
+
+// 停止唱片旋转
+function rotateRecordStop() {
+    recordImg.style.animationPlayState = "paused"
+}
+```
+旋转的动画是通过下面css相关代码设置的
+```javascript
+keyframes rotateAni {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rotate-play {
+    animation: rotateAni 10s infinite linear;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+```
+
 ## 四、总结
 
+
+通过这个大作业，我们在实践的过程中充分学习了Javascript+HTML+css的相关知识，尝试模仿制作了一个音乐类的播放网站，虽然在效果上不能与完善的APP相媲美，但是也成功实现了一些关键性的功能。我们也认识到了制作一个功能齐全、页面精美的网站对于组织代码的高要求，希望在后续的学习中日渐提升代码能力，学习并掌握更多javascript地相关知识。
 
 
 ## 五、附录
